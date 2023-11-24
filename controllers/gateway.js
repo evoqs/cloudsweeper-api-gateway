@@ -3,7 +3,12 @@ const axios = require('axios');
 
 const getTunnel = async function(req, res) {
 	try {
-		const response = await axios.get("http://localhost:8000" + req.url);
+		let url = req.url
+		if (['cloudaccounts', 'pipelines', 'policies'].indexOf(req.url) == -1) {
+			url = '/accounts/' + req.headers.user + req.url
+		}
+		console.log("http://localhost:8000" + url)
+		const response = await axios.get("http://" + req.host + ":8000" + url);
 		const responseData = response.data;
 		res.send(responseData);			
 	} catch (e) {
@@ -17,7 +22,8 @@ const getTunnel = async function(req, res) {
 const postTunnel = async function(req, res) {
 	let headers = req.headers
 	try {
-		const response = await axios.post("http://localhost:8000" + req.url, req.body);
+		req.body.accountid = headers.user
+		const response = await axios.post("http://" + req.host + ":8000" + req.url, req.body);
 		const responseData = response.data;
 		res.send(responseData);
 	} catch (e) {
@@ -29,14 +35,14 @@ const postTunnel = async function(req, res) {
 }
 
 const putTunnel = async function(req, res) {
-	const response = await axios.put("http://localhost:8000" + req.url);
+	const response = await axios.put("http://" + req.host  + ":8000" + req.url);
 	const responseData = response.data;
 	res.send(responseData);
 
 }
 
 const deleteTunnel = async function(req, res) {
-	const response = await axios.delete("http://localhost:8000" + req.url);
+	const response = await axios.delete("http://" + req.host  + ":8000" + req.url);
 	const responseData = response.data;
 	res.send(responseData);
 
