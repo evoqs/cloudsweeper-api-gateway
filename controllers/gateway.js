@@ -1,10 +1,20 @@
 const userDB = require('../db-utils/users');
 const axios = require('axios');
 
+const createPolicy = async function(req, res, next) {
+	try {
+		
+		next()
+	} catch (e) {
+
+	}
+}
+
 const getTunnel = async function(req, res) {
 	try {
 		let url = req.url
-		if (['cloudaccounts', 'pipelines', 'policies'].indexOf(req.url) == -1) {
+		console.log(url)
+		if(url == "/pipelines" || url == "/policies" || url == "/cloudaccounts") {
 			url = '/accounts/' + req.headers.user + req.url
 		}
 		console.log("http://localhost:8000" + url)
@@ -12,7 +22,7 @@ const getTunnel = async function(req, res) {
 		const responseData = response.data;
 		res.send(responseData);			
 	} catch (e) {
-		console.log(e)
+		// console.log(e)
 		res.send("error")
 	}
 
@@ -57,5 +67,6 @@ module.exports = {
 	getTunnel,
 	postTunnel,
 	putTunnel,
-	deleteTunnel
+	deleteTunnel,
+	createPolicy
 }

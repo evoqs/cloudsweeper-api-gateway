@@ -5,6 +5,7 @@ const userDB = require('../db-utils/users');
 const login = async function (req, res) {
   const { username, password } = req.body;
   const userEntry = await userDB.findUser(username);
+  console.log(userEntry)
   if (userEntry.length == 0) {
     res.status(401).send({msg: 'Incorrect credentials'})
   }
@@ -22,6 +23,22 @@ const login = async function (req, res) {
   }
 }
 
+const register = async function (req, res) {
+  const { username, password } = req.body;
+  const userEntry = await userDB.findUser(username);
+  if (userEntry.length != 0) {
+    res.status(400).send({msg: 'User already exists'})
+  }
+  else {
+    let hashedPwd = await bcrypt.hash("password", 10);
+    const newUser = await userDB.createUser(username, hashedPwd);
+    if (newUser) {
+      res.status(200).send({msg: "New user created"});
+    }
+  }
+}
+
 module.exports = {
-  login
+  login,
+  register
 }

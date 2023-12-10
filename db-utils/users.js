@@ -11,7 +11,12 @@ const findUserByID = async (id) => {
   return await User.find({_id: id}, {name: 1, username: 1, _id: 1})
 }
 
+const createUser = async (username, password) => {
+  return await User.create({name: username, username: username, password})
+}
+
 module.exports = {
   findUser,
-  findUserByID
+  findUserByID,
+  createUser
 }
