@@ -4,6 +4,7 @@ const authUtil  = require("../utils/middleware.js");
 
 module.exports = app => {
   router.get("/dummy-json", gateway.dummyJson)
+  router.get("/regions", gateway.getRegions)
   router.post("/create-policy", authUtil.authenticate, gateway.createPolicy, gateway.postTunnel)
   router.get("/*", authUtil.authenticate, gateway.getTunnel);
   router.post("/*", authUtil.authenticate, gateway.postTunnel);
