@@ -30,7 +30,7 @@ const register = async function (req, res) {
     res.status(400).send({msg: 'User already exists'})
   }
   else {
-    let hashedPwd = await bcrypt.hash("password", 10);
+    let hashedPwd = await bcrypt.hash(password, 10);
     const newUser = await userDB.createUser(username, hashedPwd);
     if (newUser) {
       res.status(200).send({msg: "New user created"});
